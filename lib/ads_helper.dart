@@ -1,13 +1,27 @@
+import 'package:ads_helper/rewarded_ad/rewarded_ad.dart';
+import 'package:ads_helper/utils/ad_config.dart';
+import 'package:ads_helper/utils/utils.dart';
 
-import 'dart:async';
+import 'interstitial_ad/interstitial_ad.dart';
 
-import 'package:flutter/services.dart';
+export 'banner_ad/banner_ad.dart';
+export 'utils/ad_config.dart';
 
 class AdsHelper {
-  static const MethodChannel _channel = MethodChannel('ads_helper');
+  void showInterstitialAds() {
+    if (AdConfig.isAdFeatureEnable) {
+      InterstitialAdUtils.showInterstitialAds();
+    } else {
+      printLog("Warning: Ads Feature is Disable");
+    }
+  }
 
-  static Future<String?> get platformVersion async {
-    final String? version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
+  Future<void> showRewardedAd(Function adShowSuccess) async {
+    if (AdConfig.isAdFeatureEnable) {
+      await RewardedAdUtils.showRewardedAd(adShowSuccess: adShowSuccess);
+    } else {
+      printLog("Warning: Ads Feature is Disable");
+      adShowSuccess.call();
+    }
   }
 }
