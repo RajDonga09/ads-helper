@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,34 +12,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // String _platformVersion = 'Unknown';
-
   @override
   void initState() {
     super.initState();
-
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      // platformVersion = await AdsHelper.platformVersion ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      // _platformVersion = platformVersion;
-    });
   }
 
   @override
@@ -52,10 +24,62 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: const Center(
-          child: Text('Running on: _platformVersion\n'),
+        body: ListView.separated(
+          itemBuilder: (BuildContext context, int index) {
+            if (index % 10 == 0) {
+              return const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 400,
+                  child: NativeAdViewWrapper(),
+                ),
+              );
+            } else {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'this is text $index',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .body1,
+                ),
+              );
+            }
+          },
+          itemCount: 50,
+          separatorBuilder: (BuildContext context, _) => const Divider(),
         ),
       ),
+      // body: GridView.builder(
+      //   itemCount: 30,
+      //   shrinkWrap: true,
+      //   key: widget.key,
+      //   padding: const EdgeInsets.all(20),
+      //   addAutomaticKeepAlives: true,
+      //   itemBuilder: (context, index) {
+      //     return Card(
+      //       semanticContainer: true,
+      //       shape: RoundedRectangleBorder(
+      //         borderRadius: BorderRadius.circular(6.0),
+      //       ),
+      //       clipBehavior: Clip.antiAliasWithSaveLayer,
+      //       child: Container(
+      //         color: Colors.white,
+      //       ),
+      //       elevation: 5,
+      //     );
+      //   },
+      //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      //     crossAxisCount: 2,
+      //     crossAxisSpacing: 20.0,
+      //     mainAxisSpacing: 20.0,
+      //     childAspectRatio: 0.55,
+      //   ),
+      // ),
+    )
+    ,
     );
   }
 }
