@@ -29,12 +29,13 @@ class _MyAppState extends State<MyApp> {
           child: ListView.separated(
             itemBuilder: (BuildContext context, int index) {
               if (index % 10 == 0) {
-                return const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: SizedBox(
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
                     width: double.infinity,
                     height: 400,
-                    child: NativeAdViewWrapper(),
+                    color: Colors.red,
+                    child: const NativeAdViewWrapper(),
                   ),
                 );
               } else {
